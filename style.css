@@ -1,4 +1,4 @@
-/* nav bar */
+/* nav */
 .right {
     float: right;
 }
@@ -9,19 +9,25 @@
 
 #nav {
     display: block;
-    background-color: white;
+    background-color: none;
     display: inline-block;
-    width: 98vw;
-    border: 3px solid #52056e;
-    border-radius: 5px;
+    width: 60vw;
+    border: 7px solid #0f5b0b;
+    border-radius: 35px;
     margin: 6px;
+    padding: 7px;
 }
 
-/* main section */
+
+/* main */
 
 body {
     font-family: 'Garamond', arial;
-    background-color: #e0c3f0;
+    background-color: #ddd720;
+    font-size: larger;
+    background-image: url("https://www.teahub.io/photos/full/17-177012_desktop-backgrounds-lion-king.jpg");
+        
+       
 }
 
 #quiz2 {
@@ -40,11 +46,11 @@ a {
 
 button {
     border: none;
-    background-color: #c263e4;
+    background-color: #0f5b0b;
     color: white;
     border-radius: 5px;
     padding: 10px 16px 10px 16px;
-    font-size: 17px;
+    font-size: 35px;
     font-family: 'Garamond', arial;
     margin: 4px;
 }
@@ -55,5 +61,6 @@ button:hover {
 }
 
 #quiz {
-    text-align: center;
+    text-align: left;
+    padding: 0px 400px;
 }
