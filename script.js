@@ -1,142 +1,222 @@
+
 // Quiz questions
-var questions = [
-    {
-    question: "Who killed Mufasa? ",
-    options: ["Rafiki", "Scar", "Zazu ", "The Hyenas",],
-    answer: "Scar"
-    },
-    {
-    question: "Who killed Scar? ",
-    options: ["Mufasa", "Simba", "The Hyenas", "Zazu ",],
-    answer: "The Hyenas"
-    },
-    {
-    question: "What was Simba's mom's name? ",
-    options: ["Sarabi ", "Nala", "Belle ", "Zaire ",],
-    answer: "Sarabi"
-    },
-    {
-    question: "What actor/actress voice the lead hyena? ",
-    options: ["Jim Carrey ", "Robin Williams ", "Will Smith ", "Whoopi Goldberg ",],
-    answer: "Whoopi Goldberg"
-    },
-    {
-    question: "What were Simba's two male sidekicks (of different species)? ",
-    options: ["Pumba & Timon ", "Bear & Malone ", "Pumba & Timon ", "Zazu & Rafiki",],
-    answer: "Pumba & Timon"
-    }
+
+    var questions = [
+        {
+            question: "Who killed Mufasa? ",
+            answers: [
+                "Rafiki", 
+                "Scar", 
+                "Zazu ", 
+                "The Hyenas"
+                 
+            ],
+            answerIndex:"Scar"
+    
+        },
+        {
+            question: "Who killed Scar? ",
+            answers: [
+                "Mufasa", 
+                "Simba", 
+                "The Hyenas", 
+                "Zazu"
+            ],
+            answerIndex: "The Hyenas"
+        },
+        {
+            question: "What was Simba's mom's name? ",
+            answers: [
+                "Sarabi", 
+                "Nala", 
+                "Belle", 
+                "Zaire"
+            ],
+            answerIndex: "Sarabi"
+        },
+        {
+            question: "What actor/actress voice the lead hyena?",
+            answers: [
+                "Jim Carrey", 
+                "Robin Williams", 
+                "Will Smith", 
+                "Whoopi Goldberg"
+            ],
+            answerIndex: "Whoopi Goldberg"
+        },
+        {
+            question: "What were Simba's two male sidekicks (of different species)?",
+            answers: [
+                "Pumba & Timon", 
+                "Bear & Malone", 
+                "Pumba & Timon", 
+                "Zazu & Rafiki"
+            ],
+            answerIndex: "Pumba & Timon"
+        }
+    
     ]
 
+// console.log(question);
+var score = 0;
+var questionIndex = 0;
+var secondsLeft = 75;
+var holdInterval = 0;
+var penalty = 10;
+var ulCreate = document.createElement("ul");
 
-// var index = 0
 
-// // object variables below
-// var score = 0;
-// var currentQuestion = -1;
-// var timeLeft = 0;
-// var timer;
+var currentTime = document.querySelector("#currentTime");
+var startBtnEl = document.querySelector("#startBtn");
+var questionsDiv = document.querySelector("#questionsDiv");
+var Wrapper = document.querySelector("#wrapper");
 
+startBtnEl.addEventListener("click",startQuiz);
 
-let score = Math.floor(Math.random() * 100);
-// start timer
-function start() {
-    var time = 75;
-    let timeLeft = 0;
-    console.log(time);
+//Timer on the page
+function startQuiz(){
+    if(holdInterval === 0){
+        holdInterval = setInterval(function(){
+            secondsLeft--;
+            currentTime.textContent = "Time: "+ secondsLeft;
 
-    console.log(timeLeft)
-   
-
-    timerClock = setInterval(function() {
-       document.querySelector('.time-left').innerHTML = time;
-        time--;
-         if (time <= -1) {
-            clearInterval(timerClock);
-            endGame(); 
-        }
-    }, 1000);
-    
-}
-
-console.log(start());
-
-// end timer
-function endGame() {
-    clearInterval(timerClock);
-    var quizContent = `
-    <h2>Game over!</h2>
-    <h3>You got a ${score} /100!</h3>
-    <h3>That means you got  + ${score / 100} +   questions correct!</h3>
-    <input type="text" id="name" placeholder="First name"> 
-    <button onclick="setScore()">Set score!</button>
-    `
-    document.getElementById("quiz-two").innerHTML = quizContent;
-}
-
-// set score
-function setScore() {
-    localStorage.setItem("highscore", score);
-    localStorage.setItem("highscoreName",  document.getElementById('name').value);
-    getScore();
-}
-// get score
-
-function getScore() {
-    var quizDontent = `
-    <h2>  ${localStorage.getItem("highscoreName")}  highscore is:</h2>    
-    <h1>  ${localStorage.getItem("highscore")}   </h1><br> 
-    
-    <button onclick="clearScore()">Clear score!</button><button onclick="resetGame()">Play Again!</button>
-    `;
-    document.getElementById("quiz-two").innerHTML = quizDontent;
-}
-// Clear score
-function clearScore() {
-    localStorage.setItem("highscore", "");
-    localStorage.setItem("highscoreName", "");
-    resetGame();
-}
-
-// Reset Game
-
-function resetGame() {
-    clearInterval(timerClock);
-    let score = 0;
-    let currentQuestion = -1;
-    let timeLeft = 0;
-    let timer = null;
-    document.querySelector(".time-left").innerHTML = timeLeft;
-    var quizContent = `
-    <h1>
-        Lion King Quiz!
-    </h1>
-    <h3>
-        Play Now!   
-    </h3>
-    <button onclick="start()">Start!</button>`;
-    document.getElementById("quiz-two").innerHTML = quizContent;
-}
-
-// 15 sec deduction
-function incorrect() {
-   let timeLeft = 15; 
-    next();
-}
-
-// 20 sec increase
-function correct() {
-    score += 20;
-    next();
-}
-
-console.log(incorrect());
-
-//  Loop questions
-function next() {
-    for(let i = 0)
-    currentQuestion++;
-    if (currentQuestion > questions.length - 1) {
-        endGame();
-        return;
+            if(secondsLeft <= 0){
+                clearInterval(holdInterval);
+                allDone();
+                currentTime.textContent = "Time's up!"
+            }
+        },1000);
     }
+    setQuestion();
+   
+};
+
+// Question on the page
+
+function setQuestion(){
+    questionsDiv.innerHTML = "";
+    ulCreate.innerHTML = "";
+    for (var i = 0; i < questions.length; i++) {
+
+    var userQuestion = questions[questionIndex].question;
+    var userChoices = questions[questionIndex].answers;
+    questionsDiv.textContent = userQuestion;
+}
+userChoices.forEach(function(newItem){
+    
+    var listItem = document.createElement("li");
+    listItem.textContent = newItem;
+    questionsDiv.appendChild(ulCreate);
+    ulCreate.appendChild(listItem);
+    listItem.addEventListener("click",(compare));
+})
+
+}
+function compare(event) {
+    var element = event.target;
+
+    if (element.matches("li")) {
+
+        var createDiv = document.createElement("div");
+        createDiv.setAttribute("id", "createDiv");
+        // Correct condition 
+        if (element.textContent == questions[questionIndex].answerIndex) {
+            score++;
+            createDiv.textContent = "Correct! The answer is:  " + questions[questionIndex].answerIndex;
+            // Correct condition 
+        } else {
+            // Will deduct -10 seconds off secondsLeft for wrong answers
+            secondsLeft = secondsLeft - penalty;
+            createDiv.textContent = "Wrong! The correct answer is:  " + questions[questionIndex].answerIndex;
+        }
+
+    }
+    // Question Index determines number question user is on
+    questionIndex++;
+    if (questionIndex >= questions.length) {
+        // All done will append last page with user stats
+        allDone();
+        createDiv.textContent = "End of quiz!" + " " + "You got  " + score + "/" + questions.length + " Correct!";
+    } else {
+        setQuestion(questionIndex);
+    }
+    questionsDiv.appendChild(createDiv);
+
+}
+
+function allDone() {
+    questionsDiv.innerHTML = "";
+    currentTime.innerHTML = "";
+
+    //Heading
+    var createH1 = document.createElement("h1");
+    createH1.setAttribute("id", "createH1");
+    createH1.textContent = "All Done!"
+
+  
+    questionsDiv.appendChild(createH1);
+
+    //Paragraph
+    var createP = document.createElement("p");
+    createP.setAttribute("id","CreateP");
+
+    questionsDiv.appendChild(createP);
+
+    if (secondsLeft >= 0){
+        var timeRemaining = secondsLeft;
+        var createP2 = document.createElement("p");
+        clearInterval(holdInterval);
+        createP.textContent= "Your final score is:" + timeRemaining;
+
+        questionsDiv.appendChild(createP2);
+    }
+
+    var createLabel = document.createElement("label");
+    createLabel.setAttribute("id", "createLabel");
+    createLabel.textContent = "Enter your initials: ";
+
+    questionsDiv.appendChild(createLabel);
+
+    var createInput = document.createElement("input");
+    createInput.setAttribute("type", "text");
+    createInput.setAttribute("id", "initials");
+    createInput.textContent = "";
+
+    questionsDiv.appendChild(createInput);
+
+    var createSubmit = document.createElement("button");
+    createSubmit.setAttribute("type", "submit");
+    createSubmit.setAttribute("id", "Submit");
+    createSubmit.textContent = "Submit";
+
+    questionsDiv.appendChild(createSubmit);
+
+
+    createSubmit.addEventListener("click", function () {
+        var initials = createInput.value;
+
+        if (initials === null) {
+
+            console.log("No value entered!");
+
+        } else {
+            var finalScore = {
+                initials: initials,
+                score: timeRemaining
+            }
+            console.log(finalScore);
+            var allScores = localStorage.getItem("allScores");
+            if (allScores === null) {
+                allScores = [];
+            } else {
+                allScores = JSON.parse(allScores);
+            }
+            allScores.push(finalScore);
+            var newScore = JSON.stringify(allScores);
+            localStorage.setItem("allScores", newScore);
+            // Travels to final page
+            window.location.replace("highscore.html");
+        }
+    });
+
 }

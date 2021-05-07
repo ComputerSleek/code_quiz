@@ -1,40 +1,26 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Testing</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     
-    <!-- Nav Bar -->
-     <div id="nav">
-            <div class="left">
-                <a href="#" class="get-score"><h4 >View Highscore</h4></a>
-            </div>
-            <div class="right">
-                <h4>Time: <span class="time-left">0</span>
-                </h4> 
-                <!-- Timer Clock -->
-            </div>
-       </div>
-              
-         <div id="quiz">
-            <div id="quiz-two">
-               <h1>
-                    Lion King Quiz!
-                </h1>
-                <!-- Play Now Button-->
-                <button class="play">Play Now!</button>
-            </div>
-            <div id="quiz-three">
-            <button id="submit">Get Results</button>
-             <div id="results"></div>
-            </div>
-        </div>
-      
-     </div>
-         <script src="script.js"></script>
-  </body>
+    <title>Lion King Quiz</title>
+    <link rel = "stylesheet" type="text/css" href="assets/style.css"/>
+
+</head>
+<body>
+    <a href ="highscore.html">View Highscores</a>
+    <div id="currentTime">
+        Time: <span id="time">0</span>
+    </div>
+    <div id= "wrapper">
+        <section id="questionsDiv">
+            <h1>Lion King Quiz</h1>
+            <p>Play Now! </br> by recalling characters in the Lion King movie.</p>
+                <ul id="choicesUl"></ul>
+                <button id="startBtn" type="button">Start Quiz</button></p>    
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>
